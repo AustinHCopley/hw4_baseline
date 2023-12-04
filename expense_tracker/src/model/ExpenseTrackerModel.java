@@ -14,6 +14,7 @@ public class ExpenseTrackerModel {
   //encapsulation - data integrity
   private List<Transaction> transactions;
   private List<Integer> matchedFilterIndices;
+  private List<ExpenseTrackerModelListener> listenerList;
 
   // This is applying the Observer design pattern.                          
   // Specifically, this is the Observable class. 
@@ -77,8 +78,11 @@ public class ExpenseTrackerModel {
   public boolean register(ExpenseTrackerModelListener listener) {
       // For the Observable class, this is one of the methods.
       //
-      // TODO
-      return false;
+      if (containsListener(listener) || listener == null) {
+        return false;
+      }
+      this.listenerList.add(listener);
+      return true;
   }
 
   /**
@@ -89,8 +93,7 @@ public class ExpenseTrackerModel {
   public int numberOfListeners() {
       // For testing, this is one of the methods.
       //
-      //TODO
-      return 0;
+      return this.listenerList.size();
   }
 
   /**
@@ -102,8 +105,7 @@ public class ExpenseTrackerModel {
   public boolean containsListener(ExpenseTrackerModelListener listener) {
       // For testing, this is one of the methods.
       //
-      //TODO
-      return false;
+      return this.listenerList.contains(listener);
   }
 
   /**
@@ -112,6 +114,8 @@ public class ExpenseTrackerModel {
   protected void stateChanged() {
       // For the Observable class, this is one of the methods.
       //
-      //TODO
+      for (ExpenseTrackerModelListener listener : listenerList) {
+        listener.update(this);
+      }
   }
 }
