@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The Model for the application that tracks expenses
+ * Applies the Oberver design pattern
+ * Observes changes to expenses and notifies the listeners when these changes occur
+ */
 public class ExpenseTrackerModel {
 
   //encapsulation - data integrity
@@ -76,6 +81,11 @@ public class ExpenseTrackerModel {
       return false;
   }
 
+  /**
+   * Gets the number of registered listeners.
+   *
+   * @return int: number of registered listeners
+   */
   public int numberOfListeners() {
       // For testing, this is one of the methods.
       //
@@ -83,6 +93,12 @@ public class ExpenseTrackerModel {
       return 0;
   }
 
+  /**
+   * Checks if a listener is registered.
+   *
+   * @param listener The ExpenseTrackerModelListener to check
+   * @return boolean: True if listener is registered, false if not
+   */
   public boolean containsListener(ExpenseTrackerModelListener listener) {
       // For testing, this is one of the methods.
       //
@@ -90,6 +106,9 @@ public class ExpenseTrackerModel {
       return false;
   }
 
+  /**
+   * Notifies listener about state changes.
+   */
   protected void stateChanged() {
       // For the Observable class, this is one of the methods.
       //
