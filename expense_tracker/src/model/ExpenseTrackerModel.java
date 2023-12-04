@@ -22,6 +22,7 @@ public class ExpenseTrackerModel {
   public ExpenseTrackerModel() {
     transactions = new ArrayList<Transaction>();
     matchedFilterIndices = new ArrayList<Integer>();
+    listenerList = new ArrayList<ExpenseTrackerModelListener>();
   }
 
   public void addTransaction(Transaction t) {
@@ -32,12 +33,14 @@ public class ExpenseTrackerModel {
     transactions.add(t);
     // The previous filter is no longer valid.
     matchedFilterIndices.clear();
+    stateChanged(); // handle updates with protected method here
   }
 
   public void removeTransaction(Transaction t) {
     transactions.remove(t);
     // The previous filter is no longer valid.
     matchedFilterIndices.clear();
+    stateChanged();
   }
 
   public List<Transaction> getTransactions() {
@@ -58,6 +61,7 @@ public class ExpenseTrackerModel {
       // For encapsulation, copy in the input list 
       this.matchedFilterIndices.clear();
       this.matchedFilterIndices.addAll(newMatchedFilterIndices);
+      stateChanged();
   }
 
   public List<Integer> getMatchedFilterIndices() {
@@ -78,7 +82,10 @@ public class ExpenseTrackerModel {
   public boolean register(ExpenseTrackerModelListener listener) {
       // For the Observable class, this is one of the methods.
       //
-      if (containsListener(listener) || listener == null) {
+      if (listener == null) {
+        return false;
+      }
+      if (containsListener(listener)) {
         return false;
       }
       this.listenerList.add(listener);
@@ -105,6 +112,9 @@ public class ExpenseTrackerModel {
   public boolean containsListener(ExpenseTrackerModelListener listener) {
       // For testing, this is one of the methods.
       //
+      if (listener == null) {
+        return false;
+      }
       return this.listenerList.contains(listener);
   }
 
